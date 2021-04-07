@@ -2,7 +2,7 @@
 
 
 This small program emulates the Energy Meter in a Victron ESS System. It reads
-values from an existing MQTT Brokder (in my case MBMD) and publishes the
+values from an existing MQTT Broker (in my case MBMD) and publishes the
 result on dbus as if it were the SDM630 meter.
 
 ![Victron Overview](./.media/victron_meter.png)
