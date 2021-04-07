@@ -19,16 +19,48 @@ Mostly of the code is forked from his repo. You can find here:
 
 # Setup
 
-# Compiling from source
+# Install MBMD
+
+To load the data from the EASTRON power meter into your MQTT browser,
+please use the mbmd program. You can find more information here:
+
+[Volkzaehler/mbmd](https://github.com/volkszaehler/mbmd)
+
+# Configuration
+
+## Change Default Configuration
+
+You need to change the default values in the ./sdm630-bridge.go file:
+
+            BROKER      = "192.168.1.119"
+            PORT        = 1883
+            TOPIC       = "stromzaehler/#"
+            CLIENT_ID   = "sdm630-bridge"
+
+
+## Compiling from source
 
 To compile this for the Venus GX (an Arm 7 processor), you can easily cross-compile with the following:
 
         `GOOS=linux GOARCH=arm GOARM=7 go build`
 
-You can compile it also with makeFile
+You can compile it also with the make command:
 
         make compile
 
+## Copy the file to you Venus OS (CerboGX)
+
+        scp ./bin/main-linux-arm/sdm630-bridge root@CerboGX
+
+## Start the program
+
+Login in via ssh to your Venus Device:
+
+        ssh root@CerboGX
+
+Start the program:
+
+        ./sdm630-bridge
 
 # Victron Grid Meter Values
 
