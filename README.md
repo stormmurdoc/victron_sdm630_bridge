@@ -19,12 +19,14 @@ Mostly of the code is forked from his repo. You can find here:
 
 # Setup
 
-# Install MBMD
+## Install MBMD
 
 To load the data from the EASTRON power meter into your MQTT browser,
 please use the mbmd program. You can find more information here:
 
 [Volkzaehler/mbmd](https://github.com/volkszaehler/mbmd)
+
+![MBMD Frontend](./.media/mbmd.png)
 
 # Configuration
 
