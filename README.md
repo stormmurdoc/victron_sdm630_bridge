@@ -90,3 +90,7 @@ Start the program:
         /Ac/L3/*               <- same as L1
         /DeviceType
         /ErrorCode
+
+# Todo
+
+- [ ] https://www.victronenergy.com/live/ccgx:root_access
