@@ -9,6 +9,10 @@ this for anyone who already has these components and wants to play around with t
 
 I use this privately, and it works in my timezone, your results may vary
 
+Special Thanks to Sean (mitchese) who did most of the work for the shm-et340.
+[Repo](https://github.com/mitchese/shm-et340)
+
+
 # Setup
 
 # Compiling from source
