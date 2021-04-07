@@ -68,6 +68,34 @@ Start the program:
 
         ./sdm630-bridge
 
+
+# Autostart Venus OS
+
+The only directory that is unaffected by an update is the /data directory.
+Fortunately, the root directory can also be found (under /data/home/root).
+If there is an executable file with the name rc.local, it will be executed
+when the system is started. This makes it possible to start the
+sdm630-bridge automatically.
+
+## Creat rc.local file
+
+Login into the system via ssh. Create a file with the following command:
+
+        vi /data/rc.local
+
+Add the following content:
+
+        #!/bin/bash
+        /data/home/root/sdm630-bridge > /dev/null 2>/dev/null &
+
+Save the file and make them executable:
+
+        chmod +x /data/rc.local
+
+Reboot the system and check if the process come up.
+
+        ps | grep sdm630
+
 # Victron Grid Meter Values
 
 [Source Victron](https://github.com/victronenergy/venus/wiki/dbus#grid-meter)
@@ -93,4 +121,4 @@ Start the program:
 
 # Todo
 
-- [ ] https://www.victronenergy.com/live/ccgx:root_access
+- [ ] Check Update process -> https://www.victronenergy.com/live/ccgx:root_access
