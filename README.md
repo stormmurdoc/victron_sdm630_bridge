@@ -1,17 +1,21 @@
-# Victron SDM630 Bridge
+# Victron Eastron SDM630 Bridge
 
-This small program emulates the SDM630 Energy Meter in a Victron ESS System. It reads
-values from an existing MBMD and publishes the result on dbus as
-if it were the SDM630 meter.
 
-Use this at your own risk, I have no association with Victron or Eastron and am providing
-this for anyone who already has these components and wants to play around with this.
+This small program emulates the Energy Meter in a Victron ESS System. It reads
+values from an existing MQTT Brokder (in my case MBMD) and publishes the
+result on dbus as if it were the SDM630 meter.
 
-I use this privately, and it works in my timezone, your results may vary
+![Victron Overview](./.media/victron_meter.png)
+
+Use this at your own risk, I have no association with Victron or Eastron
+and am providing this for anyone who already has these components and
+wants to play around with this.
+
+I use this privately, and it works in my timezone, your results may vary.
 
 Special Thanks to Sean (mitchese) who did most of the work for the shm-et340.
+Mostly of the code is forked from his repo. You can find here:
 [Repo](https://github.com/mitchese/shm-et340)
-
 
 # Setup
 
@@ -19,7 +23,11 @@ Special Thanks to Sean (mitchese) who did most of the work for the shm-et340.
 
 To compile this for the Venus GX (an Arm 7 processor), you can easily cross-compile with the following:
 
-`GOOS=linux GOARCH=arm GOARM=7 go build`
+        `GOOS=linux GOARCH=arm GOARM=7 go build`
+
+You can compile it also with makeFile
+
+        make compile
 
 
 # Victron Grid Meter Values
