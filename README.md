@@ -77,7 +77,7 @@ If there is an executable file with the name rc.local, it will be executed
 when the system is started. This makes it possible to start the
 sdm630-bridge automatically.
 
-## Creat rc.local file
+## Create rc.local file
 
 Login into the system via ssh. Create a file with the following command:
 
