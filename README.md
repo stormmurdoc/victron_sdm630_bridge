@@ -54,7 +54,7 @@ You can compile it also with the make command:
 
         make compile
 
-## Copy the file to you Venus OS (CerboGX)
+## Copy the file to your Venus OS device (e.g. CerboGX)
 
         scp ./bin/main-linux-arm/sdm630-bridge root@CerboGX
 
