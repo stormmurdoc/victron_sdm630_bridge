@@ -28,6 +28,10 @@ please use the mbmd program. You can find more information here:
 
 ![MBMD Frontend](./.media/mbmd.png)
 
+Here is an example of how the SDM630 data looks in the broker:
+
+![MQTT-Topics](./.media/mqtt-topics.png)
+
 # Configuration
 
 ## Change Default Configuration
