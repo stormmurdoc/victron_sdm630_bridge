@@ -19,6 +19,8 @@ const (
     PORT        = 1883
     TOPIC       = "stromzaehler/#"
     CLIENT_ID   = "sdm630-bridge"
+    USERNAME    = "user"
+    PASSWORD    = "pass"
 )
 
 var P1 float64 = 0.00
@@ -248,8 +250,8 @@ func main() {
     opts := mqtt.NewClientOptions()
     opts.AddBroker(fmt.Sprintf("tcp://%s:%d", BROKER, PORT))
     opts.SetClientID(CLIENT_ID)
-    opts.SetUsername("user")
-    opts.SetPassword("pass")
+    opts.SetUsername(USERNAME)
+    opts.SetPassword(PASSWORD)
     opts.SetDefaultPublishHandler(messagePubHandler)
     opts.OnConnect = connectHandler
     opts.OnConnectionLost = connectLostHandler
