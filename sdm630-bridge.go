@@ -347,6 +347,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
             psum_update=true
         } else {
             log.Info(fmt.Sprintf("Rückeinspeisung L1: %.3f W" ,P1))
+            updateVariant(float64(0.00), "W", "/Ac/L1/Power")
         }
     }
 
@@ -358,7 +359,8 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
             log.Debug(fmt.Sprintf("L2 Power: %.3f W" ,P2))
             psum_update=true
         } else {
-            log.Info(fmt.Sprintf("Rückeinspeisung L2: %.3f W" ,P2))
+            log.Info(fmt.Sprintf("Rück1einspeisung L2: %.3f W" ,P2))
+            updateVariant(float64(0.00), "W", "/Ac/L2/Power")
         }
     }
 
@@ -371,6 +373,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
             psum_update=true
         } else {
             log.Info(fmt.Sprintf("Rückeinspeisung L3: %.3f W" ,P3))
+            updateVariant(float64(0.00), "W", "/Ac/L3/Power")
         }
     }
     // Summe aller drei Phasen
