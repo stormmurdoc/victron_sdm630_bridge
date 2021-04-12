@@ -379,6 +379,12 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
     // Summe aller drei Phasen
     if psum_update {
         psum := psum + (P1+P2+P3)
+        if psum < 0 {
+            log.Info(fmt.Sprintf("Kein Verbrauch: %.2f W", psum))
+            updateVariant(float64(0.00), "W", "/Ac/L1/Power")
+            updateVariant(float64(0.00), "W", "/Ac/L2/Power")
+            updateVariant(float64(0.00), "W", "/Ac/L3/Power")
+        }
         psum_update=false
         log.Debug(fmt.Sprintf("Summe aller Phasen: %.2f W" ,psum))
     }
