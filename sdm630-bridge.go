@@ -28,6 +28,7 @@ var P2 float64 = 0.00
 var P3 float64 = 0.00
 var psum float64 = 0.00
 var psum_update bool = true
+var value_correction bool = false
 var conn, err = dbus.SystemBus()
 
 type singlePhase struct {
@@ -336,6 +337,7 @@ func ContainString(searchstring string, str string) bool {
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 
 
+
     log.Debug(fmt.Sprintf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic()))
 
     // Power L1
@@ -346,6 +348,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
             log.Debug(fmt.Sprintf("L1 Power: %.3f W" ,P1))
             psum_update=true
         } else {
+            value_correction=true
             log.Info(fmt.Sprintf("Rückeinspeisung L1: %.3f W" ,P1))
             updateVariant(float64(0.00), "W", "/Ac/L1/Power")
         }
@@ -359,6 +362,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
             log.Debug(fmt.Sprintf("L2 Power: %.3f W" ,P2))
             psum_update=true
         } else {
+            value_correction=true
             log.Info(fmt.Sprintf("Rück1einspeisung L2: %.3f W" ,P2))
             updateVariant(float64(0.00), "W", "/Ac/L2/Power")
         }
@@ -372,6 +376,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
             log.Debug(fmt.Sprintf("L3 Power: %.3f W" ,P3))
             psum_update=true
         } else {
+            value_correction=true
             log.Info(fmt.Sprintf("Rückeinspeisung L3: %.3f W" ,P3))
             updateVariant(float64(0.00), "W", "/Ac/L3/Power")
         }
@@ -380,12 +385,21 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
     if psum_update {
         psum := psum + (P1+P2+P3)
         if psum < 0 {
-            log.Info(fmt.Sprintf("Kein Verbrauch: %.2f W", psum))
+            log.Info(fmt.Sprintf("Kein Verbrauch: %d W", psum))
             updateVariant(float64(0.00), "W", "/Ac/L1/Power")
             updateVariant(float64(0.00), "W", "/Ac/L2/Power")
             updateVariant(float64(0.00), "W", "/Ac/L3/Power")
         }
         psum_update=false
+
+        // FIXME
+        if value_correction {
+            psum := (P1+P2+P3)/3
+            updateVariant(float64(psum), "W", "/Ac/L1/Power")
+            updateVariant(float64(psum), "W", "/Ac/L2/Power")
+            updateVariant(float64(psum), "W", "/Ac/L3/Power")
+            log.Info(fmt.Sprintf("Phasensumme wurde korrigiert! %.2f W" ,psum))
+        }
         log.Debug(fmt.Sprintf("Summe aller Phasen: %.2f W" ,psum))
     }
 
