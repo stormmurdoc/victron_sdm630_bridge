@@ -333,12 +333,11 @@ func ContainString(searchstring string, str string) bool {
     return obj
 }
 
-
+/* MQTT Subscribe Handler */
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 
-
-
     log.Debug(fmt.Sprintf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic()))
+    value_correction = false
 
     // Power L1
     if ContainString(".*Power/L1$",msg.Topic()) {
