@@ -1,6 +1,5 @@
 # Victron Eastron SDM630 Bridge
 
-
 This small program emulates the Energy Meter in a Victron ESS System. It reads
 values from an existing MQTT Broker (in my case MBMD) and publishes the
 result on dbus as if it were the SDM630 meter.
@@ -67,7 +66,6 @@ Login in via ssh to your Venus Device:
 Start the program:
 
         ./sdm630-bridge
-
 
 # Autostart Venus OS
 
