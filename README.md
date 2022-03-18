@@ -31,6 +31,10 @@ Here is an example of how the SDM630 data looks in the broker:
 
 ![MQTT-Topics](./.media/mqtt-topics.png)
 
+VRM Portal
+
+![Victron VRM Portal](./.media/vrm_portal.png)
+
 # Configuration
 
 ## Change Default Configuration
@@ -120,3 +124,4 @@ Reboot the system and check if the process come up.
 # Todo
 
 - [ ] Check Update process -> https://www.victronenergy.com/live/ccgx:root_access
+
