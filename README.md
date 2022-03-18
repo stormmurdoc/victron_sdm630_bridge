@@ -1,6 +1,6 @@
-# Victron Eastron SDM630 Bridge
+# Victron Eastron SDM630 Bridge (Alternative to the EM24)
 
-This small program emulates the Energy Meter in a Victron ESS System. It reads
+This small program emulates the Energy Meter (EM24) in a Victron ESS System. It reads
 values from an existing MQTT Broker (in my case MBMD) and publishes the
 result on dbus as if it were the SDM630 meter.
 
