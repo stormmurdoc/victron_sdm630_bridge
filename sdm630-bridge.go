@@ -342,65 +342,69 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
     // Power L1
     if ContainString(".*Power/L1$",msg.Topic()) {
         P1=bin2Float64(string(msg.Payload()))
-        if (P1 > 0) {
-            updateVariant(float64(P1), "W", "/Ac/L1/Power")
-            log.Debug(fmt.Sprintf("L1 Power: %.3f W" ,P1))
-            psum_update=true
-        } else {
-            value_correction=true
-            log.Info(fmt.Sprintf("Rückeinspeisung L1: %.3f W" ,P1))
-            updateVariant(float64(0.00), "W", "/Ac/L1/Power")
-        }
+        //        if (P1 > 0) {
+        //            updateVariant(float64(P1), "W", "/Ac/L1/Power")
+        //            log.Debug(fmt.Sprintf("L1 Power: %.3f W" ,P1))
+        //            psum_update=true
+        //        } else {
+        //            value_correction=true
+        //            log.Info(fmt.Sprintf("Rückeinspeisung L1: %.3f W" ,P1))
+        //            updateVariant(float64(0.00), "W", "/Ac/L1/Power")
+        //        }
+        //
+        updateVariant(float64(P1), "W", "/Ac/L1/Power")
     }
 
     // Power L2
-    if ContainString(".*Power/L2$",msg.Topic()) {
+   if ContainString(".*Power/L2$",msg.Topic()) {
         P2=bin2Float64(string(msg.Payload()))
-        if (P2 > 0) {
-            updateVariant(float64(P2), "W", "/Ac/L2/Power")
-            log.Debug(fmt.Sprintf("L2 Power: %.3f W" ,P2))
-            psum_update=true
-        } else {
-            value_correction=true
-            log.Info(fmt.Sprintf("Rück1einspeisung L2: %.3f W" ,P2))
-            updateVariant(float64(0.00), "W", "/Ac/L2/Power")
-        }
+        //if (P2 > 0) {
+        //    updateVariant(float64(P2), "W", "/Ac/L2/Power")
+        //    log.Debug(fmt.Sprintf("L2 Power: %.3f W" ,P2))
+        //    psum_update=true
+        //} else {
+        //    value_correction=true
+        //    log.Info(fmt.Sprintf("Rückeinspeisung L2: %.3f W" ,P2))
+        //    updateVariant(float64(0.00), "W", "/Ac/L2/Power")
+        //}
+        updateVariant(float64(P2), "W", "/Ac/L2/Power")
     }
 
     // Power L3
     if ContainString(".*Power/L3$",msg.Topic()) {
         P3=bin2Float64(string(msg.Payload()))
+       // if (P3 > 0) {
+       //     updateVariant(float64(P3), "W", "/Ac/L3/Power")
+       //     log.Debug(fmt.Sprintf("L3 Power: %.3f W" ,P3))
+       //     psum_update=true
+       // } else {
+       //     value_correction=true
+       //     log.Info(fmt.Sprintf("Rückeinspeisung L3: %.3f W" ,P3))
+       //     updateVariant(float64(0.00), "W", "/Ac/L3/Power")
+       // }
         updateVariant(float64(P3), "W", "/Ac/L3/Power")
-        if (P3 > 0) {
-            log.Debug(fmt.Sprintf("L3 Power: %.3f W" ,P3))
-            psum_update=true
-        } else {
-            value_correction=true
-            log.Info(fmt.Sprintf("Rückeinspeisung L3: %.3f W" ,P3))
-            updateVariant(float64(0.00), "W", "/Ac/L3/Power")
-        }
     }
     // Summe aller drei Phasen
-    if psum_update {
-        psum := psum + (P1+P2+P3)
-        if psum < 0 {
-            log.Info(fmt.Sprintf("Kein Verbrauch: %d W", psum))
-            updateVariant(float64(0.00), "W", "/Ac/L1/Power")
-            updateVariant(float64(0.00), "W", "/Ac/L2/Power")
-            updateVariant(float64(0.00), "W", "/Ac/L3/Power")
-        }
-        psum_update=false
+    //if psum_update {
+    //    psum := psum + (P1+P2+P3)
+    //    if psum < 0 {
+    //        log.Info(fmt.Sprintf("Kein Verbrauch: %d W", psum))
+    //        updateVariant(float64(0.00), "W", "/Ac/L1/Power")
+    //        updateVariant(float64(0.00), "W", "/Ac/L2/Power")
+    //        updateVariant(float64(0.00), "W", "/Ac/L3/Power")
+    //    }
+    //    psum_update=false
 
-        // FIXME
-        if value_correction {
-            psum := (P1+P2+P3)/3
-            updateVariant(float64(psum), "W", "/Ac/L1/Power")
-            updateVariant(float64(psum), "W", "/Ac/L2/Power")
-            updateVariant(float64(psum), "W", "/Ac/L3/Power")
-            log.Info(fmt.Sprintf("Phasensumme wurde korrigiert! %.2f W" ,psum))
-        }
-        log.Debug(fmt.Sprintf("Summe aller Phasen: %.2f W" ,psum))
-    }
+    //    // FIXME
+    //    if value_correction {
+    //        psum := (P1+P2+P3)/3
+    //        updateVariant(float64(psum), "W", "/Ac/L1/Power")
+    //        updateVariant(float64(psum), "W", "/Ac/L2/Power")
+    //        updateVariant(float64(psum), "W", "/Ac/L3/Power")
+    //        log.Info(fmt.Sprintf("Phasensumme wurde korrigiert! %.2f W" ,psum))
+    //    }
+    //    log.Debug(fmt.Sprintf("Summe aller Phasen: %.2f W" ,psum))
+    //}
 
     // /Ac/Energy/Forward     <- kWh  - bought energy (total of all phases)
     if ContainString(".*/Import$",msg.Topic()) {
