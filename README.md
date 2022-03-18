@@ -12,9 +12,15 @@ wants to play around with this.
 
 I use this privately, and it works in my timezone, your results may vary.
 
+__Update:__ Having owned a Multiplus II now, I can confirm that it works flawlessly with the ESS!
+
 Special Thanks to Sean (mitchese) who did most of the work for the shm-et340.
 Mostly of the code is forked from his repo. You can find here:
 [Repo](https://github.com/mitchese/shm-et340)
+
+# Tested Venus OS Version
+
+* 18.03.2022    v2.84
 
 # Setup
 
