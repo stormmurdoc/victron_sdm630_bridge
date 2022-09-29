@@ -318,6 +318,9 @@ var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 /* Called if connection is lost  */
 var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
     log.Info(fmt.Sprintf("Connect lost: %v", err))
+    os.Exit(1)
+}
+
 }
 
 /* Search for string with regex */
