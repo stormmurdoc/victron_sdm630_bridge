@@ -321,8 +321,6 @@ var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err
     os.Exit(1)
 }
 
-}
-
 /* Search for string with regex */
 func ContainString(searchstring string, str string) bool {
     var obj bool
