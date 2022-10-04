@@ -94,7 +94,7 @@ Login into the system via ssh. Create a file with the following command:
 Add the following content:
 
         #!/bin/bash
-		sleep 20 && /data/home/root/startup.sh > /data/home/root/sdm630-bdrige.log 2>&1 &
+        sleep 20 && /data/home/root/startup.sh > /data/home/root/sdm630-bdrige.log 2>&1 &
 
 Save the file and make them executable:
 
@@ -102,16 +102,16 @@ Save the file and make them executable:
 
 ## Create the startup script
 
-		cd /data/home/
-		vi startup.sh
+        cd /data/home/
+        vi startup.sh
 
 Paste the following content into the startup script:
 
         #!/bin/sh
-		while true; do
-		  /data/home/root/sdm630-bridge
-		  sleep 1
-		done
+        while true; do
+          /data/home/root/sdm630-bridge
+          sleep 1
+        done
 
 Save the file and make them executable:
 
