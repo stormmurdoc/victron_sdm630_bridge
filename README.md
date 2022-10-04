@@ -94,11 +94,28 @@ Login into the system via ssh. Create a file with the following command:
 Add the following content:
 
         #!/bin/bash
-        /data/home/root/sdm630-bridge > /dev/null 2>/dev/null &
+		sleep 20 && /data/home/root/startup.sh > /data/home/root/sdm630-bdrige.log 2>&1 &
 
 Save the file and make them executable:
 
         chmod +x /data/rc.local
+
+## Create the startup script
+
+		cd /data/home/
+		vi startup.sh
+
+Paste the following content into the startup script:
+
+        #!/bin/sh
+		while true; do
+		  /data/home/root/sdm630-bridge
+		  sleep 1
+		done
+
+Save the file and make them executable:
+
+    chmod +x /data/home/startup.sh
 
 Reboot the system and check if the process come up.
 
