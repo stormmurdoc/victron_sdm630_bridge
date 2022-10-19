@@ -1,9 +1,9 @@
 build:
-	go build -o bin/sdm630-bridge sdm630-bridge.go
+	go build -o bin/sdm630-bridge main.go
 
 run:
 	go run main.go
 
 compile:
 	echo "Compiling for ARM OS (Venus)"
-	GOOS=linux GOARCH=arm go build -o bin/main-linux-arm/sdm630-bridge sdm630-bridge.go
+	GOOS=linux GOARCH=arm GOARM=7 go build -o bin/arm/bridge/sdm630-bridge main.go
