@@ -474,7 +474,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 		log.Debug(fmt.Sprintf("Voltage L2: %.3f V", VL2))
 	}
 
-	// /Ac/L3/Current <- V AC
+	// /Ac/L3/Voltage <- V AC
 	if ContainString(".*/Voltage/L3$", msg.Topic()) {
 		VL3 := bin2Float64(string(msg.Payload()))
 		updateVariant(float64(VL3), "V", "/Ac/L3/Voltage")
