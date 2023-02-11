@@ -45,19 +45,23 @@ VRM Portal
 
 ## Change Default Configuration
 
-You need to change the default values in the ./sdm630-bridge.go file:
+You can use CLI flags to set the proper values for your setup but if you want you can also change the defaults in  the `./main.go` file:
 
-            BROKER      = "192.168.1.119"
-            PORT        = 1883
-            TOPIC       = "stromzaehler/#"
-            CLIENT_ID   = "sdm630-bridge"
+        var (
+            broker     = "192.168.1.119"
+            brokerPort = 1883
+            topic      = "stromzaehler/#"
+            clientId   = "sdm630-bridge"
+            username   = "user"
+            password   = "pass"
+        )
 
 
 ## Compiling from source
 
 To compile this for the Venus GX (an Arm 7 processor), you can easily cross-compile with the following:
 
-        `GOOS=linux GOARCH=arm GOARM=7 go build`
+        `GOOS=linux GOARCH=arm GOARM=7 go build -o bin/arm/bridge/sdm630-bridge main.go`
 
 You can compile it also with the make command:
 
@@ -65,7 +69,9 @@ You can compile it also with the make command:
 
 ## Copy the file to your Venus OS device (e.g. CerboGX)
 
-        scp ./bin/main-linux-arm/sdm630-bridge root@CerboGX
+You will need SSH access to your Venus GX device. You can find more information here: [Venus OS: Enable SSH](https://www.victronenergy.com/live/ccgx:root_access#set_access_level_to_superuser)
+
+        scp -rp ./bin/arm/bridge root@CerboGX:/data/
 
 ## Start the program
 
@@ -75,12 +81,13 @@ Login in via ssh to your Venus Device:
 
 Start the program:
 
-        ./sdm630-bridge
+        cd /data/bridge
+        ./sdm630-bridge --broker=192.168.1.119 --port=1883 --username=user --password="pass" --topic="stromzaehler/#" --client-id="grid-meter-bridge"
 
-# Autostart Venus OS
+
+# Autostart on Venus OS
 
 The only directory that is unaffected by an update is the /data directory.
-Fortunately, the root directory can also be found (under /data/home/root).
 If there is an executable file with the name rc.local, it will be executed
 when the system is started. This makes it possible to start the
 sdm630-bridge automatically.
@@ -94,7 +101,7 @@ Login into the system via ssh. Create a file with the following command:
 Add the following content:
 
         #!/bin/bash
-        sleep 20 && /data/home/root/startup.sh > /data/home/root/sdm630-bdrige.log 2>&1 &
+        sleep 20 && /data/bridge/startup.sh > /data/bridge/sdm630-bridge.log 2>&1 &
 
 Save the file and make them executable:
 
@@ -102,20 +109,20 @@ Save the file and make them executable:
 
 ## Create the startup script
 
-        cd /data/home/
+        cd /data/bridge/
         vi startup.sh
 
-Paste the following content into the startup script:
+Paste the following content into the startup script, remember to change the CLI arguments to suit your environment:
 
         #!/bin/sh
         while true; do
-          /data/home/root/sdm630-bridge
+          /data/bridge/sdm630-bridge --broker=192.168.1.119 --port=1883 --username=user --password="pass" --topic="stromzaehler/#" --client-id="grid-meter-bridge"
           sleep 1
         done
 
 Save the file and make them executable:
 
-    chmod +x /data/home/startup.sh
+        chmod +x /data/bridge/startup.sh
 
 Reboot the system and check if the process come up.
 
