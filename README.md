@@ -36,9 +36,14 @@ Here is an example of how the SDM630 data looks in the broker:
 
 ![MQTT-Topics](./.media/mqtt-topics.png)
 
-example mbmd autostart in `/data/rc.local`:
+example mbmd autostart added in `/data/bridge/startup.sh`:
 ```
-sleep 5 && /data/bridge/mbmd run -a IpOfModbusToTcpOrModbusToUsbPath:502 --rtu -d='sdm:1' --mqtt-broker='IpOfMqttBroker:1883' --mqtt-topic=stromzaehler --mqtt-user=mbmd --mqtt-password='PW' > /data/log/mbmd.log 2>&1 &
+#!/bin/bash
+while true; do
+        /data/bridge/mbmd run -a IpOfModbusToTcpOrModbusToUsbPath:502 --rtu -d='sdm:1' --mqtt-broker='127.0.0.1:1883' --mqtt-topic='stromzaehler' &
+        /data/bridge/sdm630-bridge --broker=127.0.0.1 --port=1883 --topic='stromzaehler/#' --client-id='grid-meter-bridge'
+        sleep 1
+done
 ```
 
 # Configuration
