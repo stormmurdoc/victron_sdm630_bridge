@@ -32,7 +32,7 @@ To load the data from the EASTRON power meter into your MQTT Broker, please use 
 
 ![MBMD Frontend](./.media/mbmd.png)
 
-Here is an example of how the SDM630 data looks in the broker: 
+Here is an example of how the SDM630 data looks in the broker:
 
 ![MQTT-Topics](./.media/mqtt-topics.png)
 
@@ -73,6 +73,12 @@ To compile this for the Venus GX (an Arm 7 processor), you can easily cross-comp
 You can compile it also with the make command:
 ```
 make compile
+```
+
+## Update go modules
+
+```
+go get -u && go mod tidy
 ```
 
 ## Copy the file to your Venus OS device (e.g. CerboGX)
