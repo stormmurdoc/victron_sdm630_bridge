@@ -1,15 +1,21 @@
 # Victron Eastron SDM630 Bridge (Alternative to the EM24)
 
-This small program emulates the Energy Meter (EM24) in a Victron ESS System. It reads values from an existing MQTT Broker (in my case MBMD) and publishes the result on dbus as if it were the SDM630 meter.
+This small program emulates the Energy Meter (EM24) in a
+Victron ESS System. It reads values from an existing MQTT
+Broker (in my case MBMD) and publishes the result on dbus
+as if it were the SDM630 meter.
 
 ![Victron Overview](./.media/victron_meter.png)
 
+Use this at your own risk, I have no association with Victron
+or Eastron and am providing this for anyone who already has
+these components and wants to play around with this.
 
-Use this at your own risk, I have no association with Victron or Eastron and am providing this for anyone who already has these components and wants to play around with this.
+I use this privately, and it works in my timezone, your
+results may vary.
 
-I use this privately, and it works in my timezone, your results may vary.
-
-__Update:__ Having owned a Multiplus II now, I can confirm that it works flawlessly with the ESS!
+__Update:__ Having owned a Multiplus II now, I can confirm
+that it works flawlessly with the ESS!
 
 Special Thanks to Sean (mitchese) who did most of the work for the shm-et340.
 Mostly of the code is forked from his repo. You can find it here:
@@ -19,16 +25,35 @@ VRM Portal
 
 ![Victron VRM Portal](./.media/vrm_portal.png)
 
-# Tested Venus OS Version
+## Table of content
 
-* 18.03.2022 v2.84
-* 10.02.2023 v2.92
+- [Tested Venus OS Version](#tested-venus-os-version)
+- [Setup](#setup)
+  - [Install MBMD](#install-mbmd)
+- [Configuration](#configuration)
+  - [Change Default Configuration](#change-default-configuration)
+  - [Compiling from source](#compiling-from-source)
+  - [Update go modules](#update-go-modules)
+  - [Copy the file to your Venus OS device (e.g. CerboGX)](#copy-the-file-to-your-venus-os-device-eg-cerbogx)
+  - [Start the program](#start-the-program)
+  - [Autostart on Venus OS](#autostart-on-venus-os)
+  - [Create rc.local file](#create-rclocal-file)
+  - [Create the startup script](#create-the-startup-script)
+  - [Victron Grid Meter Values](#victron-grid-meter-values)
+- [ToDo](#todo)
 
-# Setup
+## Tested Venus OS Version
 
-## Install MBMD
+- 18.03.2022 v2.84
+- 10.02.2023 v2.92
 
-To load the data from the EASTRON power meter into your MQTT Broker, please use the mbmd program. You can find more information here: [Volkzaehler/mbmd](https://github.com/volkszaehler/mbmd)
+## Setup
+
+### Install MBMD
+
+To load the data from the EASTRON power meter into your MQTT Broker,
+please use the mbmd program. You can find more information here:
+[Volkzaehler/mbmd](https://github.com/volkszaehler/mbmd)
 
 ![MBMD Frontend](./.media/mbmd.png)
 
@@ -37,21 +62,27 @@ Here is an example of how the SDM630 data looks in the broker:
 ![MQTT-Topics](./.media/mqtt-topics.png)
 
 example mbmd autostart added in `/data/bridge/startup.sh`:
-```
+
+```bash
 #!/bin/bash
 while true; do
-        /data/bridge/mbmd run -a IpOfModbusToTcpOrModbusToUsbPath:502 --rtu -d='sdm:1' --mqtt-broker='127.0.0.1:1883' --mqtt-topic='stromzaehler' &
-        /data/bridge/sdm630-bridge --broker=127.0.0.1 --port=1883 --topic='stromzaehler/#' --client-id='grid-meter-bridge'
-        sleep 1
+    /data/bridge/mbmd run -a IpOfModbusToTcpOrModbusToUsbPath:502 \
+        --rtu -d='sdm:1' --mqtt-broker='127.0.0.1:1883' \
+        --mqtt-topic='stromzaehler' &
+    /data/bridge/sdm630-bridge --broker=127.0.0.1 --port=1883 \
+        --topic='stromzaehler/#' --client-id='grid-meter-bridge'
+    sleep 1
 done
 ```
 
-# Configuration
+## Configuration
 
-## Change Default Configuration
+### Change Default Configuration
 
-You can use CLI flags to set the proper values for your setup but if you want you can also change the defaults in  the `./main.go` file:
-```
+You can use CLI flags to set the proper values for your setup but
+if you want you can also change the defaults in  the `./main.go` file:
+
+```golang
 var (
     broker     = "192.168.1.119"
     brokerPort = 1883
@@ -62,99 +93,120 @@ var (
 )
 ```
 
-## Compiling from source
+### Compiling from source
 
-To compile this for the Venus GX (an Arm 7 processor), you can easily cross-compile with the following:
+To compile this for the Venus GX (an Arm 7 processor), you can
+easily cross-compile with the following:
 
-```
+```golang
 `GOOS=linux GOARCH=arm GOARM=7 go build -o bin/arm/bridge/sdm630-bridge main.go`
 ```
 
 You can compile it also with the make command:
-```
+
+```golang
 make compile
 ```
 
-## Update go modules
+### Update go modules
 
-```
+```shell
 go get -u && go mod tidy
 ```
 
-## Copy the file to your Venus OS device (e.g. CerboGX)
+### Copy the file to your Venus OS device (e.g. CerboGX)
 
-You will need SSH access to your Venus GX device. You can find more information here: [Venus OS: Enable SSH](https://www.victronenergy.com/live/ccgx:root_access#set_access_level_to_superuser)
-```
+You will need SSH access to your Venus GX device. You can find
+more information here: [Venus OS: Enable SSH](https://www.victronenergy.com/live/ccgx:root_access#set_access_level_to_superuser)
+
+```shell
 scp -rp ./bin/arm/bridge root@CerboGX:/data/
 ```
 
-## Start the program
+### Start the program
 
 Login in via ssh to your Venus Device:
-```
+
+```shell
 ssh root@CerboGX
 ```
 
 Start the program:
-```
+
+```shell
 cd /data/bridge
-./sdm630-bridge --broker=192.168.1.119 --port=1883 --username=user --password="pass" --topic="stromzaehler/#" --client-id="grid-meter-bridge"
+./sdm630-bridge --broker=192.168.1.119 --port=1883 \
+    --username=user \
+    --password="pass" \
+    --topic="stromzaehler/#" \
+    --client-id="grid-meter-bridge"
 ```
 
-# Autostart on Venus OS
+### Autostart on Venus OS
 
 The only directory that is unaffected by an update is the /data directory.
 If there is an executable file with the name rc.local, it will be executed
 when the system is started. This makes it possible to start the
 sdm630-bridge automatically.
 
-## Create rc.local file
+### Create rc.local file
 
 Login into the system via ssh. Create a file with the following command:
-```
+
+```shell
 vi /data/rc.local
 ```
 
 Add the following content:
-```
+
+```shell
 #!/bin/bash
 sleep 20 && /data/bridge/startup.sh > /data/bridge/sdm630-bridge.log 2>&1 &
 ```
 
 Save the file and make them executable:
-```
+
+```shell
 chmod +x /data/rc.local
 ```
 
-## Create the startup script
-```
+### Create the startup script
+
+```shell
 cd /data/bridge/
 vi startup.sh
 ```
 
-Paste the following content into the startup script, remember to change the CLI arguments to suit your environment:
-```
+Paste the following content into the startup script, remember to change
+the CLI arguments to suit your environment:
+
+```shell
 #!/bin/sh
 while true; do
-  /data/bridge/sdm630-bridge --broker=192.168.1.119 --port=1883 --username=user --password="pass" --topic="stromzaehler/#" --client-id="grid-meter-bridge"
+  /data/bridge/sdm630-bridge --broker=192.168.1.119 \
+    --port=1883 --username=user --password="pass" \
+    --topic="stromzaehler/#" --client-id="grid-meter-bridge"
   sleep 1
 done
 ```
 
 Save the file and make them executable:
-```
+
+```shell
 chmod +x /data/bridge/startup.sh
 ```
 
 Reboot the system and check if the process come up.
-```
+
+```shell
 ps | grep sdm630
 ```
-# Victron Grid Meter Values
+
+### Victron Grid Meter Values
 
 [Source Victron](https://github.com/victronenergy/venus/wiki/dbus#grid-meter)
 
-```
+```shell
 com.victronenergy.grid
 
 /Ac/Energy/Forward     <- kWh  - bought energy (total of all phases)
@@ -175,7 +227,6 @@ com.victronenergy.grid
 /ErrorCode
 ```
 
-# ToDo
+## ToDo
 
-- [ ] Check Update process -> https://www.victronenergy.com/live/ccgx:root_access
-
+- [ ] Check Update process -> [ccgx:root_access](https://www.victronenergy.com/live/ccgx:root_access)
