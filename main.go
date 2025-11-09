@@ -17,7 +17,7 @@ import (
 
 /* Configuration */
 var (
-	broker     = "192.168.1.119"
+	broker     = "mqtt.local.trinityhomelab.org"
 	brokerPort = 1883
 	topic      = "stromzaehler/#"
 	clientId   = "sdm630-bridge"
