@@ -352,7 +352,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 	value_correction = false
 
 	// Power L1
-	if ContainString(".*Power/L1$", msg.Topic()) {
+	if ContainString(".*/Power/L1$", msg.Topic()) {
 		P1 = bin2Float64(string(msg.Payload()))
 		//        if (P1 > 0) {
 		//            updateVariant(float64(P1), "W", "/Ac/L1/Power")
@@ -368,7 +368,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 	}
 
 	// Power L2
-	if ContainString(".*Power/L2$", msg.Topic()) {
+	if ContainString(".*/Power/L2$", msg.Topic()) {
 		P2 = bin2Float64(string(msg.Payload()))
 		// if (P2 > 0) {
 		//    updateVariant(float64(P2), "W", "/Ac/L2/Power")
@@ -383,7 +383,7 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 	}
 
 	// Power L3
-	if ContainString(".*Power/L3$", msg.Topic()) {
+	if ContainString(".*/Power/L3$", msg.Topic()) {
 		P3 = bin2Float64(string(msg.Payload()))
 		// if (P3 > 0) {
 		//     updateVariant(float64(P3), "W", "/Ac/L3/Power")
